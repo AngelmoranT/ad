@@ -3,44 +3,83 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 
-using CCategoria;
 
+using CCategoria;
 
 public partial class MainWindow : Gtk.Window
 {
-    
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
+	public MainWindow() : base(Gtk.WindowType.Toplevel)
+	{
+		Build();
+		Title = "Categoria";
+		deleteAction.Sensitive = false;
 
-    {
-        Build();
+		App.Instance.Connection = new MySqlConnection("server=localhost;database=dbprueba;user=root;password=sistemas");
+		App.Instance.Connection.Open();
 
-        App.Instance.Connection = new MySqlConnection("server = localhost;database = dbprueba;user = root;password=sistemas");
-	    App.Instance.Connection.Open();
+		treeView.AppendColumn("id", new CellRendererText(), "text", 0);
+		treeView.AppendColumn("nombre", new CellRendererText(), "text", 1);
+		ListStore listStore = new ListStore(typeof(string), typeof(string));
+		treeView.Model = listStore;
 
-        treeView.AppendColumn("id", new CellRendererText(), "text", 0);
-        treeView.AppendColumn("nombre", new CellRendererText(), "text", 1);
-        ListStore listStore = new ListStore(typeof(string));
-        treeView.Model = listStore;
+		fillListStore(listStore);
 
-        IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
-        dbCommand.CommandText = "select * from categoria order by id";
-        IDataReader dataReader = dbCommand.ExecuteReader();
-        while (dataReader.Read())
+		treeView.Selection.Changed += delegate {
+			bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
+			deleteAction.Sensitive = hasSelected;
+            editAction.Sensitive = hasSelected;
+			//if (treeView.Selection.CountSelectedRows() > 0)
+			//    deleteAction.Sensitive = true;
+			//else
+			//deleteAction.Sensitive = false;
+		};
 
-            listStore.AppendValues(dataReader["id"].ToString(), dataReader["nombre"]);
-            dataReader.Close();
+		newAction.Activated += delegate {
+			new CategoriaWindow();
+		};
 
-        newAction.Activated += delegate {
-            new CategoriaView();
-        };
+		refreshAction.Activated += delegate {
+            object id = getId();
+            new CategoriaWindow(id);
+		};
 
-    } 
+		deleteAction.Activated += delegate {
+			if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?"))
+			{
+				object id = getId();
+				IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
+				dbCommand.CommandText = "delete from categoria where id = @id";
+				DbCommandHelper.AddParameter(dbCommand, "id", id);
+				dbCommand.ExecuteNonQuery();
+			}
 
-        protected void OnDeleteEvent(object sender, DeleteEventArgs a)
-        {
 
-        App.Instance.Connection.Close();
-            Application.Quit();
-            a.RetVal = true;
-        }
-    }
+		};
+	}
+
+	private object getId()
+	{
+		TreeIter treeIter;
+		treeView.Selection.GetSelected(out treeIter);
+		return treeView.Model.GetValue(treeIter, 0);
+	}
+
+	private void fillListStore(ListStore listStore)
+	{
+		listStore.Clear();
+		IDbCommand dbCommnand = App.Instance.Connection.CreateCommand();
+		dbCommnand.CommandText = "select * from categoria order by id";
+		IDataReader dataReader = dbCommnand.ExecuteReader();
+		while (dataReader.Read())
+			listStore.AppendValues(dataReader["id"].ToString(), dataReader["nombre"]);
+		dataReader.Close();
+	}
+
+	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+	{
+		App.Instance.Connection.Close();
+
+		Application.Quit();
+		a.RetVal = true;
+	}
+}

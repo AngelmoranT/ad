@@ -67,7 +67,13 @@
     <Compile Include="gtk-gui\CCategoria.CategoriaView.cs" />
     <Compile Include="Properties\CategoriaWindow.cs" />
     <Compile Include="gtk-gui\CCategoria.Properties.CategoriaWindow.cs" />
-    <Compile Include="App.cs" />
+    <Compile Include="gtk-gui\CCategoria.DbComandHelper.cs" />
+    <Compile Include="Properties\Categoria.cs" />
+    <Compile Include="gtk-gui\CCategoria.Properties.ActionGroup.cs" />
+    <Compile Include="Properties\CategoriaDao.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\EmptyCSSFile.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

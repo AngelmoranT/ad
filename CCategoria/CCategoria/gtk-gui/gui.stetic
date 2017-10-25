@@ -6,12 +6,24 @@
   <import>
     <widget-library name="../bin/Debug/CCategoria.exe" internal="true" />
   </import>
+  <action-group name="CCategoria.DbComandHelper" />
+  <action-group name="CCategoria.Properties.ActionGroup" />
   <widget class="Gtk.Window" id="MainWindow" design-size="400 353">
     <action-group name="Default">
       <action id="newAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-new</property>
+      </action>
+      <action id="refreshAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-refresh</property>
+      </action>
+      <action id="deleteAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-delete</property>
       </action>
     </action-group>
     <property name="MemberName" />
@@ -28,6 +40,8 @@
             <property name="ShowArrow">False</property>
             <node name="toolbar1" type="Toolbar">
               <node type="Toolitem" action="newAction" />
+              <node type="Toolitem" action="refreshAction" />
+              <node type="Toolitem" action="deleteAction" />
             </node>
           </widget>
           <packing>
