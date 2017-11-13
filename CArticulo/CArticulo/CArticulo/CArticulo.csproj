@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{3F6E951B-3E97-4A27-8012-7BE366428070}</ProjectGuid>
+    <ProjectGuid>{3CA82B51-277C-4F86-AE43-465C0F04711B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CCategoria</RootNamespace>
-    <AssemblyName>CCategoria</AssemblyName>
+    <RootNamespace>CArticulo</RootNamespace>
+    <AssemblyName>CArticulo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -48,9 +48,6 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Data" />
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\mysql\MySql.Data.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -63,18 +60,6 @@
     <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CategoriaView.cs" />
-    <Compile Include="gtk-gui\CCategoria.CategoriaView.cs" />
-    <Compile Include="Properties\CategoriaWindow.cs" />
-    <Compile Include="gtk-gui\CCategoria.Properties.CategoriaWindow.cs" />
-    <Compile Include="gtk-gui\CCategoria.DbComandHelper.cs" />
-    <Compile Include="Properties\Categoria.cs" />
-    <Compile Include="gtk-gui\CCategoria.Properties.ActionGroup.cs" />
-    <Compile Include="Properties\CategoriaDao.cs" />
-    <Compile Include="Properties\TreeViewHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\EmptyCSSFile.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
